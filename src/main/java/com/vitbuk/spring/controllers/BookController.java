@@ -49,4 +49,21 @@ public class BookController {
         model.addAttribute("book", bookDAO.show(id));
         return "books/show";
     }
+
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("book", bookDAO.show(id));
+        return "books/edit";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("book") Book book, BindingResult bindingResult, @PathVariable("id") int id) {
+
+        // personValidator.validate(person, bindingResult);
+
+        // if(bindingResult.hasErrors())
+        //      return "people/edit";
+        bookDAO.update(id, book);
+        return "redirect:/books";
+    }
 }
