@@ -1,15 +1,14 @@
 package com.vitbuk.spring.dao;
 
+import com.vitbuk.spring.models.Book;
 import com.vitbuk.spring.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class PersonDAO {
@@ -27,8 +26,11 @@ public class PersonDAO {
     }
 
     public Person show(int id) {
-        return jdbcTemplate.query("SELECT * FROM Person WHERE id=?",
+        Person person = jdbcTemplate.query("SELECT * FROM Person WHERE id=?",
                 new Object[]{id}, new BeanPropertyRowMapper<>(Person.class)).stream().findAny().orElse(null);
+
+        person.setBooks(booksOfPerson(id));
+        return person;
     }
 
     public void save(Person person) {
@@ -45,5 +47,9 @@ public class PersonDAO {
         jdbcTemplate.update("DELETE FROM Person WHERE id=?", id);
     }
 
-
+    public List<Book> booksOfPerson(int id) {
+        String sql = "SELECT * FROM BOOK WHERE person_id=" + id;
+        List<Book> bookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Book.class));
+        return bookList;
+    }
 }
