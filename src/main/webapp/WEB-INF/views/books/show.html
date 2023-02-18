@@ -8,6 +8,15 @@
 <a th:if="${book}">
   <p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear_of_creation()}"></p>
 
+    <form th:method="PATCH" th:action="@{/book/{id}/assign/}">
+        <label for="person">Choose person:</label>
+        <select th:object="${person}" th:field="*{person.getId()}" id="person">
+            <option th:each="person: ${people}" th:text="${person.getName()}"></option>
+        </select>
+
+        <input type="submit" value="Make an admin"/>
+    </form>
+
   <a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</a>
 
   <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">

@@ -7,7 +7,6 @@ import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -49,7 +48,6 @@ public class PersonDAO {
 
     public List<Book> booksOfPerson(int id) {
         String sql = "SELECT * FROM BOOK WHERE person_id=" + id;
-        List<Book> bookList = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Book.class));
-        return bookList;
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Book.class));
     }
 }

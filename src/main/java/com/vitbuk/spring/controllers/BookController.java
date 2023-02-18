@@ -1,6 +1,7 @@
 package com.vitbuk.spring.controllers;
 
 import com.vitbuk.spring.dao.BookDAO;
+import com.vitbuk.spring.dao.PersonDAO;
 import com.vitbuk.spring.models.Book;
 import com.vitbuk.spring.models.Person;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
 
     private BookDAO bookDAO;
+    private PersonDAO personDAO;
 
     @Autowired
-    public BookController(BookDAO bookDAO) {
+    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
         this.bookDAO = bookDAO;
+        this.personDAO = personDAO;
     }
 
     @GetMapping()
@@ -47,6 +50,7 @@ public class BookController {
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookDAO.show(id));
+        model.addAttribute("people", personDAO.index());
         return "books/show";
     }
 
@@ -71,5 +75,11 @@ public class BookController {
     public String delete(@PathVariable("id") int id) {
         bookDAO.delete(id);
         return "redirect:/books";
+    }
+
+    @PatchMapping("/book/{id}/assign")
+    public String assignBook(@ModelAttribute("person") Person person, @ModelAttribute Book book) {
+        bookDAO.assignBook(person, book);
+        return "redirect:/people";
     }
 }
