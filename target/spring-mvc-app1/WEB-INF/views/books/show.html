@@ -5,24 +5,33 @@
     <title>Book page</title>
 </head>
 <body>
-<a th:if="${book}">
   <p th:text="${book.getName() + ', ' + book.getAuthor() + ', ' + book.getYear_of_creation()}"></p>
 
-    <form th:method="PATCH" th:action="@{/book/{id}/assign/}">
-        <label for="person">Choose person:</label>
-        <select th:object="${person}" th:field="*{person.getId()}" id="person">
-            <option th:each="person: ${people}" th:text="${person.getName()}"></option>
-        </select>
+  <div th:if="${owner}">
+      <span>Book assigned to: </span> <span th:text="${owner.getName()}">Person name</span>
 
-        <input type="submit" value="Make an admin"/>
-    </form>
+      <form th:method="PATCH" th:action="@{/books/{id}/release(id=${book.getId()})}">
+          <input type="submit" value="Return book"/>
+      </form>
+
+  </div>
+  <div th:if="${people}">
+      <span>You can assign book to anyone you want</span>
+      <form th:method="PATCH" th:action="@{/books/{id}/assign(id=${book.getId()})}">
+          <label for="person">Choose person:</label>
+          <select th:object="${person}" th:field="*{id}" id="person">
+              <option th:each="person: ${people}" th:value="${person.getId()}" th:text="${person.getName()}"></option>
+          </select>
+
+          <input type="submit" value="Assign book"/>
+      </form>
+  </div>
 
   <a th:href="@{/books/{id}/edit(id=${book.getId()})}">Edit</a>
 
   <form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
     <input type="submit" value="Delete"/>
   </form>
-</a>
 
 </body>
 </html>

@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/books")
 public class BookController {
@@ -48,9 +50,16 @@ public class BookController {
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, @ModelAttribute("person") Person person, Model model) {
+        Optional<Person> bookOwner = bookDAO.getBookOwner(id);
+
         model.addAttribute("book", bookDAO.show(id));
-        model.addAttribute("people", personDAO.index());
+
+        if(bookOwner.isPresent())
+            model.addAttribute("owner", bookDAO.getBookOwner(id));
+        else
+            model.addAttribute("people", personDAO.index());
+
         return "books/show";
     }
 
@@ -77,9 +86,9 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @PatchMapping("/book/{id}/assign")
-    public String assignBook(@ModelAttribute("person") Person person, @ModelAttribute Book book) {
-        bookDAO.assignBook(person, book);
-        return "redirect:/people";
+    @PatchMapping("/{id}/assign")
+    public String assignBook(@ModelAttribute("person") Person person, @PathVariable("id") int id) {
+        bookDAO.assignBook(person, id);
+        return "redirect:/books";
     }
 }
