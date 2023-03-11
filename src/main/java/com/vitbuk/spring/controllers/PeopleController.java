@@ -41,7 +41,7 @@ public class PeopleController {
        // if(bindingResult.hasErrors())
        //     return "people/new";
 
-        personDAO.save(person);
+        peopleService.save(person);
         return "redirect:/people";
     }
 
