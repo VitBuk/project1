@@ -4,6 +4,8 @@ import com.vitbuk.spring.dao.BookDAO;
 import com.vitbuk.spring.dao.PersonDAO;
 import com.vitbuk.spring.models.Book;
 import com.vitbuk.spring.models.Person;
+import com.vitbuk.spring.services.BookService;
+import com.vitbuk.spring.services.PeopleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,18 +18,19 @@ import java.util.Optional;
 @RequestMapping("/books")
 public class BookController {
 
-    private BookDAO bookDAO;
-    private PersonDAO personDAO;
+
+    private final PeopleService peopleService;
+    private final BookService bookService;
 
     @Autowired
-    public BookController(BookDAO bookDAO, PersonDAO personDAO) {
-        this.bookDAO = bookDAO;
-        this.personDAO = personDAO;
+    public BookController(PeopleService peopleService, BookService bookService) {
+        this.peopleService = peopleService;
+        this.bookService = bookService;
     }
 
     @GetMapping()
     public String index(Model model) {
-        model.addAttribute("books", bookDAO.index());
+        model.addAttribute("books", (bookService.findAll()));
         return "books/index";
     }
 
@@ -57,7 +60,7 @@ public class BookController {
         if(bookOwner.isPresent())
             model.addAttribute("owner", bookDAO.getBookOwner(id));
         else
-            model.addAttribute("people", personDAO.index());
+            model.addAttribute("people", peopleService.findAll());
 
         return "books/show";
     }
