@@ -71,13 +71,13 @@ public class BookController {
 
         // if(bindingResult.hasErrors())
         //      return "people/edit";
-        bookDAO.update(id, book);
+        bookService.update(id, book);
         return "redirect:/books";
     }
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        bookDAO.delete(id);
+        bookService.delete(id);
         return "redirect:/books";
     }
 
