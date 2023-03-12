@@ -34,13 +34,6 @@ public class PeopleController {
 
     @PostMapping()
     public String create(@ModelAttribute("person") Person person, BindingResult bindingResult) {
-
-        // в bindingResult складываются и простейшие ошибки с @Valid и сложные с personValidatora
-        //personValidator.validate(person, bindingResult);
-
-       // if(bindingResult.hasErrors())
-       //     return "people/new";
-
         peopleService.save(person);
         return "redirect:/people";
     }
@@ -70,7 +63,7 @@ public class PeopleController {
 
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
-        personDAO.delete(id);
+        peopleService.delete(id);
         return "redirect:/people";
     }
 
