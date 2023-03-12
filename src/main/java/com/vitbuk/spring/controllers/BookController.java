@@ -41,14 +41,7 @@ public class BookController {
 
     @PostMapping()
     public String create(@ModelAttribute("book") Book book, BindingResult bindingResult) {
-
-        // в bindingResult складываются и простейшие ошибки с @Valid и сложные с personValidatora
-        //personValidator.validate(person, bindingResult);
-
-        // if(bindingResult.hasErrors())
-        //     return "people/new";
-
-        bookDAO.save(book);
+        bookService.save(book);
         return "redirect:/books";
     }
 
