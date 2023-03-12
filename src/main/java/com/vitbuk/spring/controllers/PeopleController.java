@@ -53,7 +53,7 @@ public class PeopleController {
 
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
-        model.addAttribute("person", personDAO.show(id));
+        model.addAttribute("person", peopleService.findOne(id));
         return "people/edit";
     }
 
@@ -64,7 +64,7 @@ public class PeopleController {
 
        // if(bindingResult.hasErrors())
       //      return "people/edit";
-        personDAO.update(id, person);
+        peopleService.update(id, person);
         return "redirect:/people";
     }
 
