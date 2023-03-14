@@ -47,11 +47,11 @@ public class BookController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, @ModelAttribute("person") Person person, Model model) {
-        Optional<Person> bookOwner = bookDAO.getBookOwner(id);
+        Person bookOwner = bookService.getBookOwner(id);
         model.addAttribute("book", bookService.findOne(id));
 
-        if(bookOwner.isPresent())
-            model.addAttribute("owner", bookDAO.getBookOwner(id));
+        if(bookOwner != null)
+            model.addAttribute("owner", bookService.getBookOwner(id));
         else
             model.addAttribute("people", peopleService.findAll());
 

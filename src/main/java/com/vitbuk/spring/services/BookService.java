@@ -4,6 +4,7 @@ import com.vitbuk.spring.models.Book;
 import com.vitbuk.spring.models.Person;
 import com.vitbuk.spring.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,4 +50,10 @@ public class BookService {
     public void assignBook(Person person,  int id) {
         jdbcTemplate.update("UPDATE Book SET person_id=? WHERE id=?", person.getId(), id);
     }
+
+    public Person getBookOwner(int id){
+        return bookRepository.findById(id).map(Book::getOwner).orElse(null);
+    }
+
+
 }
