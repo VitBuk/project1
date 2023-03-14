@@ -66,11 +66,6 @@ public class BookController {
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("book") Book book, BindingResult bindingResult, @PathVariable("id") int id) {
-
-        // personValidator.validate(person, bindingResult);
-
-        // if(bindingResult.hasErrors())
-        //      return "people/edit";
         bookService.update(id, book);
         return "redirect:/books";
     }

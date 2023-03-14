@@ -44,4 +44,9 @@ public class BookService {
     public void delete(int id) {
         bookRepository.deleteById(id);
     }
+
+    @Transactional
+    public void assignBook(Person person,  int id) {
+        jdbcTemplate.update("UPDATE Book SET person_id=? WHERE id=?", person.getId(), id);
+    }
 }
