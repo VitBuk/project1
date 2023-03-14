@@ -84,7 +84,7 @@ public class BookController {
 
     @PatchMapping("/{id}/return")
     public String returnBook(@PathVariable("id") int id) {
-        bookDAO.returnBook(id);
+        bookService.returnBook(id);
         return "redirect:/books";
     }
 }

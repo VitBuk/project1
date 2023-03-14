@@ -4,7 +4,6 @@ import com.vitbuk.spring.models.Book;
 import com.vitbuk.spring.models.Person;
 import com.vitbuk.spring.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +58,15 @@ public class BookService {
 
     public Person getBookOwner(int id){
         return bookRepository.findById(id).map(Book::getOwner).orElse(null);
+    }
+
+    public void returnBook(int id) {
+        bookRepository.findById(id).ifPresent(
+                book -> {
+                    book.setOwner(null);
+                    book.setTakenAt(null);
+                }
+        );
     }
 
 }
