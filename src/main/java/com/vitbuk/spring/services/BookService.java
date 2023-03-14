@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,12 +49,16 @@ public class BookService {
 
     @Transactional
     public void assignBook(Person person,  int id) {
-        jdbcTemplate.update("UPDATE Book SET person_id=? WHERE id=?", person.getId(), id);
+        bookRepository.findById(id).ifPresent(
+                book -> {
+                    book.setOwner(person);
+                    book.setTakenAt(new Date());
+                }
+        );
     }
 
     public Person getBookOwner(int id){
         return bookRepository.findById(id).map(Book::getOwner).orElse(null);
     }
-
 
 }
