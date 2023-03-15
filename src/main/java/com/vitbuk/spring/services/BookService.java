@@ -38,6 +38,9 @@ public class BookService {
             return bookRepository.findAll(PageRequest.of(page,booksPerPage)).getContent();
     }
 
+    public List<Book> searchByTitle(String query) {
+        return bookRepository.findByTitleStartingWith(query);
+    }
     public Book findOne(int id) {
         Optional<Book> foundBook = bookRepository.findById(id);
         return foundBook.orElse(null);
